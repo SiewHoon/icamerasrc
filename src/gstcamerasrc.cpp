@@ -2637,7 +2637,6 @@ gst_camerasrc_decide_allocation(GstCamBaseSrc *bsrc,GstQuery *query, GstPad *pad
         gst_buffer_pool_config_set_params (config, caps, size, min, max);
         gst_buffer_pool_set_config(camerasrc->streams[stream_id].downstream_pool, down_config);
         gst_buffer_pool_set_active(camerasrc->streams[stream_id].downstream_pool, TRUE);
-        gst_structure_free (config);
       }
 
       gst_object_unref(pool);

@@ -962,7 +962,7 @@ gst_camerasrc_buffer_pool_free_buffer (GstBufferPool * bpool, GstBuffer * buffer
       break;
     case GST_CAMERASRC_IO_MODE_DMA_EXPORT:
     case GST_CAMERASRC_IO_MODE_DMA_IMPORT:
-      if (meta->buffer->dmafd)
+      if (meta->buffer->dmafd >= 0)
         close(meta->buffer->dmafd);
       break;
     default:
@@ -973,6 +973,10 @@ gst_camerasrc_buffer_pool_free_buffer (GstBufferPool * bpool, GstBuffer * buffer
   pool->buffers[meta->index] = NULL;
   GST_DEBUG("CameraId=%d, StreamId=%d free_buffer buffer %p.",
     camerasrc->device_id, pool->stream_id, buffer);
+
+  if (buffer->pool == NULL && camerasrc->io_mode == GST_CAMERASRC_IO_MODE_DMA_IMPORT)
+    buffer->pool = camerasrc->streams[pool->stream_id].downstream_pool;
+
   gst_buffer_unref (buffer);
 }
 
