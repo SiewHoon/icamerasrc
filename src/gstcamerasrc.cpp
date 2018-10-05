@@ -2622,6 +2622,11 @@ gst_camerasrc_decide_allocation(GstCamBaseSrc *bsrc,GstQuery *query, GstPad *pad
         camerasrc->streams[stream_id].downstream_pool = NULL;
       }
 
+      if (pool == NULL) {
+	g_print("%s: buffer pool is NULL\n");
+	return FALSE;
+      }
+
       camerasrc->streams[stream_id].downstream_pool = (GstBufferPool *)gst_object_ref(pool);
 
       /* config downstream buffer pool where buffers are allocated */
